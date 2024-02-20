@@ -14,7 +14,7 @@ export class FoodService {
       category: 'food',
       image:
         'https://www.comedera.com/wp-content/uploads/2017/08/tacos-al-pastor-receta.jpg',
-      price: 60,
+      price: 65,
     },
     {
       id: 2,
