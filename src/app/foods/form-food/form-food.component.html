@@ -1,98 +1,108 @@
-<form [formGroup]="form" class="max-w-3xl">
-
-  <!--NAME-->
-
-  <div class="example-container pb-2">
-    <mat-form-field class="w-full" appearance="outline">
-      <mat-label>Nombre</mat-label>
-      <input matInput placeholder="example: Empanada" formControlName="name" required>
-
-      @if (name?.invalid && (name?.dirty || name?.touched)) {
-      <mat-error>
-        @if (name?.hasError('required')) {
-        <span class="text-xs">Complete este campo</span>
+<div class="flex flex-col lg:flex-row gap-6 w-full justify-center items-center">
+  <form [formGroup]="form" class="max-w-3xl">
+    <button mat-icon-button [routerLink]="'/food/food-list'">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="text-2xl text-black font-bold pb-6">{{edit ? 'Editar comida' : 'Añadir nueva comida'}}</h1>
+  
+    <!--NAME-->
+  
+    <div class="example-container pb-2">
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput placeholder="example: Empanada" formControlName="name" required>
+  
+        @if (name?.invalid && (name?.dirty || name?.touched)) {
+        <mat-error>
+          @if (name?.hasError('required')) {
+          <span class="text-xs">Complete este campo</span>
+          }
+        </mat-error>
         }
-      </mat-error>
-      }
-    </mat-form-field>
-  </div>
-
-  <!--DESCRIPTION-->
-
-  <div class="example-container pb-2">
-    <mat-form-field class="w-full" appearance="outline">
-      <mat-label>Descripcion</mat-label>
-      <textarea matInput placeholder="example: Queso" formControlName="description" required></textarea>
-      @if (description?.invalid && (description?.dirty || description?.touched)) {
-      <mat-error>
-        @if (description?.hasError('required')) {
-        <span class="text-xs">Complete este campo</span>
+      </mat-form-field>
+    </div>
+  
+    <!--DESCRIPTION-->
+  
+    <div class="example-container pb-2">
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Descripcion</mat-label>
+        <textarea matInput placeholder="example: Queso" formControlName="description" required></textarea>
+        @if (description?.invalid && (description?.dirty || description?.touched)) {
+        <mat-error>
+          @if (description?.hasError('required')) {
+          <span class="text-xs">Complete este campo</span>
+          }
+          @if (description?.hasError('minlength')) {
+          <span class="text-xs">Debe contener Maximo {{description?.getError('minlength').requiredLength}} caracteres,
+            Actualmente tiene {{description?.getError('minlength').actualLength}}</span>
+          }
+        </mat-error>
         }
-        @if (description?.hasError('minlength')) {
-        <span class="text-xs">Debe contener Maximo {{description?.getError('minlength').requiredLength}} caracteres,
-          Actualmente tiene {{description?.getError('minlength').actualLength}}</span>
+      </mat-form-field>
+    </div>
+  
+    <!--IMAGE-->
+  
+    <div class="example-container pb-2">
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Imagen</mat-label>
+        <input matInput placeholder="example: URL" formControlName="image" required>
+  
+        @if (image?.invalid && (image?.dirty || image?.touched)) {
+        <mat-error>
+          @if (image?.hasError('required')) {
+          <span class="text-xs">Complete este campo</span>
+          }
+        </mat-error>
         }
-      </mat-error>
-      }
-    </mat-form-field>
-  </div>
-
-  <!--IMAGE-->
-
-  <div class="example-container pb-2">
-    <mat-form-field class="w-full" appearance="outline">
-      <mat-label>Imagen</mat-label>
-      <input matInput placeholder="example: URL" formControlName="image" required>
-
-      @if (image?.invalid && (image?.dirty || image?.touched)) {
-      <mat-error>
-        @if (image?.hasError('required')) {
-        <span class="text-xs">Complete este campo</span>
+      </mat-form-field>
+    </div>
+  
+    <!--CATEGORY-->
+  
+    <div class="example-container pb-2">
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Categoria</mat-label>
+        <mat-select formControlName="category">
+          <mat-option value="food">Comida</mat-option>
+          <mat-option value="drink">Bebida</mat-option>
+        </mat-select>
+        @if (name?.invalid && (name?.dirty || name?.touched)) {
+        <mat-error>
+          @if (name?.hasError('required')) {
+          <span class="text-xs">Complete este campo</span>
+          }
+        </mat-error>
         }
-      </mat-error>
-      }
-    </mat-form-field>
-  </div>
-
-  <!--CATEGORY-->
-
-  <div class="example-container pb-2">
-    <mat-form-field class="w-full" appearance="outline">
-      <mat-label>Categoria</mat-label>
-      <mat-select formControlName="category">
-        <mat-option value="food">Comida</mat-option>
-        <mat-option value="drink">Bebida</mat-option>
-      </mat-select>
-      @if (name?.invalid && (name?.dirty || name?.touched)) {
-      <mat-error>
-        @if (name?.hasError('required')) {
-        <span class="text-xs">Complete este campo</span>
+      </mat-form-field>
+    </div>
+  
+    <!--PRICE-->
+  
+    <div class="example-container pb-2">
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Precio</mat-label>
+        <input matInput type="number" placeholder="0" formControlName="price" class="right-align">
+        <span matTextPrefix>$&nbsp;</span>
+        <span matTextSuffix>.00</span>
+        @if (price?.invalid && (price?.dirty || price?.touched)) {
+        <mat-error>
+          @if (price?.hasError('required')) {
+          <span class="text-xs">Complete este campo</span>
+          }
+          @if (price?.hasError('min')) {
+          <span class="text-xs">Minimo de {{price?.getError('min').min}}, Valor actual es de
+            {{price?.getError('min').actual}}</span>
+          }
+        </mat-error>
         }
-      </mat-error>
-      }
-    </mat-form-field>
-  </div>
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="edit ? updateData() : sendData()">{{edit ? 'Actualizar' : 'Añadir'}}</button>
+  </form>
+  <div class="w-full lg:w-1/2">
+    <img class="rounded-lg w-full aspect-auto object-contain" src="{{image?.value}}">
+</div>
+</div>
 
-  <!--PRICE-->
-
-  <div class="example-container pb-2">
-    <mat-form-field class="w-full" appearance="outline">
-      <mat-label>Precio</mat-label>
-      <input matInput type="number" placeholder="0" formControlName="price" class="right-align">
-      <span matTextPrefix>$&nbsp;</span>
-      <span matTextSuffix>.00</span>
-      @if (price?.invalid && (price?.dirty || price?.touched)) {
-      <mat-error>
-        @if (price?.hasError('required')) {
-        <span class="text-xs">Complete este campo</span>
-        }
-        @if (price?.hasError('min')) {
-        <span class="text-xs">Minimo de {{price?.getError('min').min}}, Valor actual es de
-          {{price?.getError('min').actual}}</span>
-        }
-      </mat-error>
-      }
-    </mat-form-field>
-  </div>
-
-</form>

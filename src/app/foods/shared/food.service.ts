@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Food } from './food.model';
+import { log } from 'console';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FoodService {
 
-  menu:Food[] = [
+  API_URL:string='';
+
+  menu: Food[] = [
     {
       id: 1,
       name: 'Tacos',
@@ -79,11 +85,55 @@ export class FoodService {
         'https://i.ytimg.com/vi/gU_2E3TRZx0/maxresdefault.jpg',
       price: 25,
     },
-  ]
+  ];
 
-  constructor() { }
+  constructor(private http:HttpClient) {
+  this.API_URL = `${environment.API_URL}`
+  }
+//funcion para obtener todas las comidas
+  public getAll():Observable<Food[]>{
+    return this.http.get<Food[]>(this.API_URL+'food/all');
+  }
+//funcion para agregar comida
+  public addFood(food:Food): Observable<Food>{
+    return this.http.post<Food>(this.API_URL+'food/save',food);
+  }
 
+  public getOneFood(id:number) :Observable<Food>{
+    return this.http.get<Food>(this.API_URL+'food/find/'+id);
+  }
+
+  public deleteFood(deleteFood:Food):Observable<unknown>{
+    return this.http.delete(this.API_URL + 'food/delete/' + deleteFood.id);
+  }
   public getAllFoods():Food[] {
       return this.menu;
   }
+  /*public getOne(id:number):Food | undefined {
+    return this.menu.find(food =>food.id === id);
+  }
+  public addFood (food:Food){
+    this.menu.push(food);
+  }
+  
+  public updateFood(newFood:Food){
+    this.menu.forEach((food, index)=>{
+      if (food.id == newFood.id){
+        console.log(newFood);
+        this.menu[index] = newFood;
+        console.log(this.menu);
+        
+      }
+    });
+  }
+  public deleteFood(deletefood: Food){
+    console.log(this.menu.length);
+
+    this.menu.forEach((food, index)=>{
+      if (food.id == deletefood.id){
+        this.menu.splice(index,1);
+        console.log(this.menu.length);
+      }
+    })
+  }*/
 }

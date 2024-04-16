@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FoodService } from '../shared/food.service';
 import { Food } from '../shared/food.model';
 import { FoodComponent } from '../food/food.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-food-list',
@@ -16,9 +17,22 @@ export class FoodListComponent implements OnInit{
   constructor(public serviceFood: FoodService) { }
 
  ngOnInit(): void {
-  this.data = this.serviceFood.getAllFoods();
+ // this.data = this.serviceFood.getAllFoods();
+  this.getAllFoods();
   console.log(this.data);
  } 
 
+ public getAllFoods(){
+  return this.serviceFood.getAll().subscribe({
+    next: (data) => this.data = data,
+    error: (e) => console.error(e),
+    complete: () => console.info(this.data),
+  });
+ }
+public foodDeleted(deleted:boolean):void{
+  if (deleted) {
+    this.getAllFoods();
+  }
+}
 
 }

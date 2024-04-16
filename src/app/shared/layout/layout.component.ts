@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
 import {MatListModule} from '@angular/material/list';
+import {MediaMatcher} from '@angular/cdk/layout';
 
 
 @Component({
@@ -14,7 +15,21 @@ import {MatListModule} from '@angular/material/list';
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnDestroy{
+
+  mobileQuery: MediaQueryList;
+
+  private _mobileQueryListener: () => void;
+
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
 
     opened = true;
 
@@ -31,6 +46,11 @@ export class LayoutComponent {
         routerLink: 'food/form'
       }
     ]
+
+    public mediaMatcher (){
+      console.log(this.mobileQuery.matches);
+      
+    }
 
   public open (){
     if (this.opened) {
